@@ -70,10 +70,13 @@
 #line 1 "parser.y"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+extern char *yytext;
 extern int yylex();
-//void yyerror(char *s);
+void yyerror (const char *s);
 
-#line 77 "y.tab.c"
+#line 80 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -117,15 +120,17 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    FLOATDCL = 258,                /* FLOATDCL  */
-    INTDCL = 259,                  /* INTDCL  */
-    ID = 260,                      /* ID  */
-    ASSIGN = 261,                  /* ASSIGN  */
-    INUM = 262,                    /* INUM  */
-    FNUM = 263,                    /* FNUM  */
+    COMMENT = 258,                 /* COMMENT  */
+    INT = 259,                     /* INT  */
+    FLOAT = 260,                   /* FLOAT  */
+    VAR = 261,                     /* VAR  */
+    NUM = 262,                     /* NUM  */
+    ID = 263,                      /* ID  */
     PLUS = 264,                    /* PLUS  */
-    PRINT = 265,                   /* PRINT  */
-    COMMENT = 266                  /* COMMENT  */
+    MINUS = 265,                   /* MINUS  */
+    TIMES = 266,                   /* TIMES  */
+    PRINT = 267,                   /* PRINT  */
+    ASSIGN = 268                   /* ASSIGN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -134,15 +139,17 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define FLOATDCL 258
-#define INTDCL 259
-#define ID 260
-#define ASSIGN 261
-#define INUM 262
-#define FNUM 263
+#define COMMENT 258
+#define INT 259
+#define FLOAT 260
+#define VAR 261
+#define NUM 262
+#define ID 263
 #define PLUS 264
-#define PRINT 265
-#define COMMENT 266
+#define MINUS 265
+#define TIMES 266
+#define PRINT 267
+#define ASSIGN 268
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -166,24 +173,20 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_FLOATDCL = 3,                   /* FLOATDCL  */
-  YYSYMBOL_INTDCL = 4,                     /* INTDCL  */
-  YYSYMBOL_ID = 5,                         /* ID  */
-  YYSYMBOL_ASSIGN = 6,                     /* ASSIGN  */
-  YYSYMBOL_INUM = 7,                       /* INUM  */
-  YYSYMBOL_FNUM = 8,                       /* FNUM  */
+  YYSYMBOL_COMMENT = 3,                    /* COMMENT  */
+  YYSYMBOL_INT = 4,                        /* INT  */
+  YYSYMBOL_FLOAT = 5,                      /* FLOAT  */
+  YYSYMBOL_VAR = 6,                        /* VAR  */
+  YYSYMBOL_NUM = 7,                        /* NUM  */
+  YYSYMBOL_ID = 8,                         /* ID  */
   YYSYMBOL_PLUS = 9,                       /* PLUS  */
-  YYSYMBOL_PRINT = 10,                     /* PRINT  */
-  YYSYMBOL_COMMENT = 11,                   /* COMMENT  */
-  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
-  YYSYMBOL_program = 13,                   /* program  */
-  YYSYMBOL_statement = 14,                 /* statement  */
-  YYSYMBOL_floatdcl_statement = 15,        /* floatdcl_statement  */
-  YYSYMBOL_intdcl_statement = 16,          /* intdcl_statement  */
-  YYSYMBOL_assign_statement = 17,          /* assign_statement  */
-  YYSYMBOL_inum_statement = 18,            /* inum_statement  */
-  YYSYMBOL_id_plus_fnum_statement = 19,    /* id_plus_fnum_statement  */
-  YYSYMBOL_print_statement = 20            /* print_statement  */
+  YYSYMBOL_MINUS = 10,                     /* MINUS  */
+  YYSYMBOL_TIMES = 11,                     /* TIMES  */
+  YYSYMBOL_PRINT = 12,                     /* PRINT  */
+  YYSYMBOL_ASSIGN = 13,                    /* ASSIGN  */
+  YYSYMBOL_YYACCEPT = 14,                  /* $accept  */
+  YYSYMBOL_program = 15,                   /* program  */
+  YYSYMBOL_statement = 16                  /* statement  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -511,19 +514,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   21
+#define YYLAST   29
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  14
+#define YYNRULES  26
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  27
+#define YYNSTATES  32
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   268
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -563,15 +566,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12,    13
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    10,    10,    11,    14,    15,    16,    17,    20,    23,
-      26,    27,    30,    33,    36
+       0,    13,    13,    14,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    38,    39,    40
 };
 #endif
 
@@ -587,11 +591,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "FLOATDCL", "INTDCL",
-  "ID", "ASSIGN", "INUM", "FNUM", "PLUS", "PRINT", "COMMENT", "$accept",
-  "program", "statement", "floatdcl_statement", "intdcl_statement",
-  "assign_statement", "inum_statement", "id_plus_fnum_statement",
-  "print_statement", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "COMMENT", "INT",
+  "FLOAT", "VAR", "NUM", "ID", "PLUS", "MINUS", "TIMES", "PRINT", "ASSIGN",
+  "$accept", "program", "statement", YY_NULLPTR
 };
 
 static const char *
@@ -601,7 +603,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-5)
+#define YYPACT_NINF (-7)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -615,9 +617,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -5,     0,    -5,    -4,    -3,     3,     2,    -5,    -5,    -5,
-      -5,    -5,     4,     5,     1,     6,    -5,    -5,     9,    -5,
-       8,    10,    -5,    12,    -5,    -5,    -5
+      -7,     0,    -7,    -7,     8,    15,    -7,    -7,    11,    -7,
+      -7,    -7,    10,    -7,    -7,    13,    16,    -6,    -7,    -7,
+      -7,    -7,    12,    14,    -7,    18,    -7,    -7,    -7,    -7,
+      21,    -7
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -625,21 +628,22 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     0,     0,     0,     0,     3,     4,     5,
-       6,     7,     0,     0,     0,     0,     8,     9,     0,    12,
-       0,     0,    14,     0,    10,    11,    13
+       2,     0,     1,     4,     6,     5,     7,    14,     8,     9,
+      10,    11,    12,    13,     3,    15,    16,     0,    24,    23,
+      22,    21,     0,     0,    25,     0,    17,    19,    18,    20,
+       0,    26
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,    -5,    -5,    -5,    -5,    -5,    -5,    -5
+      -7,    -7,    -7
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     7,     8,     9,    10,    20,    21,    11
+       0,     1,    14
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -647,39 +651,42 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,    12,    13,     3,     4,     5,    18,    15,    19,    14,
-       6,     0,     0,     0,     0,    16,    17,    22,    23,    24,
-      26,    25
+       2,    24,    25,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,    18,    19,    15,    20,    21,    26,
+      27,    28,    29,    16,    17,     0,    22,    30,    31,    23
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     5,     5,     3,     4,     5,     5,     5,     7,     6,
-      10,    -1,    -1,    -1,    -1,    11,    11,    11,     9,    11,
-       8,    11
+       0,     7,     8,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,     4,     5,     8,     7,     8,     7,
+       8,     7,     8,     8,    13,    -1,    13,     9,     7,    13
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    13,     0,     3,     4,     5,    10,    14,    15,    16,
-      17,    20,     5,     5,     6,     5,    11,    11,     5,     7,
-      18,    19,    11,     9,    11,    11,     8
+       0,    15,     0,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    13,    16,     8,     8,    13,     4,     5,
+       7,     8,    13,    13,     7,     8,     7,     8,     7,     8,
+       9,     7
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    13,    13,    14,    14,    14,    14,    15,    16,
-      17,    17,    18,    19,    20
+       0,    14,    15,    15,    16,    16,    16,    16,    16,    16,
+      16,    16,    16,    16,    16,    16,    16,    16,    16,    16,
+      16,    16,    16,    16,    16,    16,    16
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     1,     1,     1,     1,     3,     3,
-       4,     4,     1,     3,     3
+       0,     2,     0,     2,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     2,     2,     4,     4,     4,
+       4,     2,     2,     2,     2,     3,     5
 };
 
 
@@ -1142,38 +1149,146 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 8: /* floatdcl_statement: FLOATDCL ID COMMENT  */
+  case 4: /* statement: COMMENT  */
+#line 18 "parser.y"
+                { printf("comment\n"); }
+#line 1156 "y.tab.c"
+    break;
+
+  case 5: /* statement: FLOAT  */
+#line 19 "parser.y"
+                { printf("float\n"); }
+#line 1162 "y.tab.c"
+    break;
+
+  case 6: /* statement: INT  */
 #line 20 "parser.y"
-                                        { printf("Parsed float declaration.\n"); }
-#line 1149 "y.tab.c"
+              { printf("int\n"); }
+#line 1168 "y.tab.c"
     break;
 
-  case 9: /* intdcl_statement: INTDCL ID COMMENT  */
+  case 7: /* statement: VAR  */
+#line 21 "parser.y"
+              { printf("var\n"); }
+#line 1174 "y.tab.c"
+    break;
+
+  case 8: /* statement: ID  */
+#line 22 "parser.y"
+             { printf("id\n"); }
+#line 1180 "y.tab.c"
+    break;
+
+  case 9: /* statement: PLUS  */
 #line 23 "parser.y"
-                                    { printf("Parsed int declaration.\n"); }
-#line 1155 "y.tab.c"
+               { printf("plus\n"); }
+#line 1186 "y.tab.c"
     break;
 
-  case 12: /* inum_statement: INUM  */
+  case 10: /* statement: MINUS  */
+#line 24 "parser.y"
+                { printf("minus\n"); }
+#line 1192 "y.tab.c"
+    break;
+
+  case 11: /* statement: TIMES  */
+#line 25 "parser.y"
+                { printf("times\n"); }
+#line 1198 "y.tab.c"
+    break;
+
+  case 12: /* statement: PRINT  */
+#line 26 "parser.y"
+                { printf("print\n"); }
+#line 1204 "y.tab.c"
+    break;
+
+  case 13: /* statement: ASSIGN  */
+#line 27 "parser.y"
+                 { printf("assign\n"); }
+#line 1210 "y.tab.c"
+    break;
+
+  case 14: /* statement: NUM  */
+#line 28 "parser.y"
+              { printf("num\n"); }
+#line 1216 "y.tab.c"
+    break;
+
+  case 15: /* statement: INT ID  */
+#line 29 "parser.y"
+                 { printf("int id\n"); }
+#line 1222 "y.tab.c"
+    break;
+
+  case 16: /* statement: FLOAT ID  */
 #line 30 "parser.y"
-                     { printf("Parsed assignment to integer.\n"); }
-#line 1161 "y.tab.c"
+                   { printf("float id\n"); }
+#line 1228 "y.tab.c"
     break;
 
-  case 13: /* id_plus_fnum_statement: ID PLUS FNUM  */
+  case 17: /* statement: INT ID ASSIGN NUM  */
+#line 31 "parser.y"
+                            { printf("int id assign num\n"); }
+#line 1234 "y.tab.c"
+    break;
+
+  case 18: /* statement: FLOAT ID ASSIGN NUM  */
+#line 32 "parser.y"
+                              { printf("float id assign num\n"); }
+#line 1240 "y.tab.c"
+    break;
+
+  case 19: /* statement: INT ID ASSIGN ID  */
 #line 33 "parser.y"
-                                     { printf("Parsed assignment with addition.\n"); }
-#line 1167 "y.tab.c"
+                           { printf("int id assign id\n"); }
+#line 1246 "y.tab.c"
     break;
 
-  case 14: /* print_statement: PRINT ID COMMENT  */
+  case 20: /* statement: FLOAT ID ASSIGN ID  */
+#line 34 "parser.y"
+                             { printf("float id assign id\n"); }
+#line 1252 "y.tab.c"
+    break;
+
+  case 21: /* statement: PRINT ID  */
+#line 35 "parser.y"
+                   { printf("print id\n"); }
+#line 1258 "y.tab.c"
+    break;
+
+  case 22: /* statement: PRINT NUM  */
 #line 36 "parser.y"
-                                  { printf("Parsed print statement.\n"); }
-#line 1173 "y.tab.c"
+                    { printf("print num\n"); }
+#line 1264 "y.tab.c"
+    break;
+
+  case 23: /* statement: PRINT FLOAT  */
+#line 37 "parser.y"
+                      { printf("print float\n"); }
+#line 1270 "y.tab.c"
+    break;
+
+  case 24: /* statement: PRINT INT  */
+#line 38 "parser.y"
+                    { printf("print int\n"); }
+#line 1276 "y.tab.c"
+    break;
+
+  case 25: /* statement: ID ASSIGN NUM  */
+#line 39 "parser.y"
+                        { printf("id assign num\n"); }
+#line 1282 "y.tab.c"
+    break;
+
+  case 26: /* statement: ID ASSIGN ID PLUS NUM  */
+#line 40 "parser.y"
+                               { printf("id assign id + num\n"); }
+#line 1288 "y.tab.c"
     break;
 
 
-#line 1177 "y.tab.c"
+#line 1292 "y.tab.c"
 
       default: break;
     }
@@ -1366,22 +1481,16 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 39 "parser.y"
+#line 42 "parser.y"
 
-extern FILE *yyin;
-extern int yyparse();
-//extern void yyerror(char *s);
 
-int main()
-{
-	do
-	{
-    	yyparse();
-	}
-	while (!feof(yyin));
-	return 0;
+ 
+void yyerror(const char *s) {
+	fprintf(stderr, "Error -> %s\n", s);
 }
 
-//void yyerror(const char *s) {
-//  fprintf(stderr, "error: %s\n", s);
-//}
+int main(void)
+{
+	yyparse();
+	return 0;
+}

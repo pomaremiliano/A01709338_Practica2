@@ -54,15 +54,17 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    FLOATDCL = 258,                /* FLOATDCL  */
-    INTDCL = 259,                  /* INTDCL  */
-    ID = 260,                      /* ID  */
-    ASSIGN = 261,                  /* ASSIGN  */
-    INUM = 262,                    /* INUM  */
-    FNUM = 263,                    /* FNUM  */
+    COMMENT = 258,                 /* COMMENT  */
+    INT = 259,                     /* INT  */
+    FLOAT = 260,                   /* FLOAT  */
+    VAR = 261,                     /* VAR  */
+    NUM = 262,                     /* NUM  */
+    ID = 263,                      /* ID  */
     PLUS = 264,                    /* PLUS  */
-    PRINT = 265,                   /* PRINT  */
-    COMMENT = 266                  /* COMMENT  */
+    MINUS = 265,                   /* MINUS  */
+    TIMES = 266,                   /* TIMES  */
+    PRINT = 267,                   /* PRINT  */
+    ASSIGN = 268                   /* ASSIGN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -71,15 +73,17 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define FLOATDCL 258
-#define INTDCL 259
-#define ID 260
-#define ASSIGN 261
-#define INUM 262
-#define FNUM 263
+#define COMMENT 258
+#define INT 259
+#define FLOAT 260
+#define VAR 261
+#define NUM 262
+#define ID 263
 #define PLUS 264
-#define PRINT 265
-#define COMMENT 266
+#define MINUS 265
+#define TIMES 266
+#define PRINT 267
+#define ASSIGN 268
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

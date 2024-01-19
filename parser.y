@@ -1,56 +1,53 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+extern char *yytext;
 extern int yylex();
-//void yyerror(char *s);
+void yyerror (const char *s);
 %}
 
-%token FLOATDCL INTDCL ID ASSIGN INUM FNUM PLUS PRINT COMMENT
+%token COMMENT INT FLOAT VAR NUM ID PLUS MINUS TIMES PRINT ASSIGN
 
 %%
-program: /* empty */
+program: 
    	| program statement
    	;
 
-statement: floatdcl_statement
-     	| intdcl_statement
-     	| assign_statement
-     	| print_statement
-     	;
-
-floatdcl_statement: FLOATDCL ID COMMENT { printf("floatdcl\n"); }
-              	;
-
-intdcl_statement: INTDCL ID COMMENT { printf("intcdl\n"); }
-            	;
-
-assign_statement: ID ASSIGN inum_statement COMMENT
-            	| ID ASSIGN id_plus_fnum_statement COMMENT
-            	;
-
-inum_statement: INUM { printf("inum\n"); }
-          	;
-
-id_plus_fnum_statement: ID PLUS FNUM { printf("plus \n"); }
-                  	;
-
-print_statement: PRINT ID COMMENT { printf("comment\n"); }
-           	;
-
+statement: 
+	COMMENT { printf("comment\n"); }
+	| FLOAT { printf("float\n"); }
+	| INT { printf("int\n"); }
+	| VAR { printf("var\n"); }
+	| ID { printf("id\n"); }
+	| PLUS { printf("plus\n"); }
+	| MINUS { printf("minus\n"); }
+	| TIMES { printf("times\n"); }
+	| PRINT { printf("print\n"); }
+	| ASSIGN { printf("assign\n"); }
+	| NUM { printf("num\n"); }
+	| INT ID { printf("int id\n"); }
+	| FLOAT ID { printf("float id\n"); }
+	| INT ID ASSIGN NUM { printf("int id assign num\n"); }
+	| FLOAT ID ASSIGN NUM { printf("float id assign num\n"); }
+	| INT ID ASSIGN ID { printf("int id assign id\n"); }
+	| FLOAT ID ASSIGN ID { printf("float id assign id\n"); }
+	| PRINT ID { printf("print id\n"); }
+	| PRINT NUM { printf("print num\n"); }
+	| PRINT FLOAT { printf("print float\n"); }
+	| PRINT INT { printf("print int\n"); }
+	| ID ASSIGN NUM { printf("id assign num\n"); }
+	| ID ASSIGN ID PLUS NUM{ printf("id assign id + num\n"); }
+	;
 %%
-extern FILE *yyin;
-extern int yyparse();
-//extern void yyerror(char *s);
 
-int main()
-{
-	do
-	{
-    	yyparse();
-	}
-	while (!feof(yyin));
-	return 0;
+ 
+void yyerror(const char *s) {
+	fprintf(stderr, "Error -> %s\n", s);
 }
 
-//void yyerror(const char *s) {
-//  fprintf(stderr, "error: %s\n", s);
-//}
+int main(void)
+{
+	yyparse();
+	return 0;
+}
