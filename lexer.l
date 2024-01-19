@@ -1,24 +1,29 @@
 %{
 #include <stdio.h> 
 #include "y.tab.h"
+extern yylval;
 %}
+
+digit [0-9]
+letter [a-zA-Z]
+id {letter}({letter}|{digit})*
+num {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 
 %%
 
-"floatdcl"	{ return FLOATDCL; }
-"intdcl"  	{ return INTDCL; }
-"print"   	{ return PRINT; }
-"+"       	{ return PLUS; }
-"assign"  	{ return ASSIGN; }
-"//"       	{ return COMMENT; }  
-
-[a-zA-Z_][a-zA-Z0-9_]*  { yylval = strcat(yytext); return ID; }  
-[0-9]+               	{ yylval = strcat(yytext); return INUM; } 
-[0-9]+\.[0-9]+       	{ yylval = strcat(yytext); return FNUM; } 
-
-[ \t\n]+	{ /* Ignore whitespace */ }
-
-.       	{ printf("Unexpected character: %s\n", yytext); }
+\/\/.*\n {return COMMENT;}
+"i" {return INT;}
+"f" {return FLOAT;}
+"a" {return VAR;}
+{num} {yylval = atof(yytext); return NUM;}
+{id} {yylval = strdup(yytext); return ID;}
+"+" {return PLUS;}
+"-" {return MINUS;}
+"*" {return TIMES;}
+"p"	{return PRINT;}
+"=" {return ASSIGN;}
+[ \t\n] {;}
+. {return yytext[0];}
 
 %%
 
