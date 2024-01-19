@@ -1,7 +1,7 @@
 %{
 #include <stdio.h> 
 #include "y.tab.h"
-extern yylval;
+extern int yylval;
 %}
 
 digit [0-9]
@@ -15,7 +15,7 @@ num {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 "i" {return INT;}
 "f" {return FLOAT;}
 "a" {return VAR;}
-{num} {yylval = atof(yytext); return NUM;}
+{num} {yylval = strdup(yytext); return NUM;}
 {id} {yylval = strdup(yytext); return ID;}
 "+" {return PLUS;}
 "-" {return MINUS;}

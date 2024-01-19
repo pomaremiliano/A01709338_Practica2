@@ -459,7 +459,7 @@ char *yytext;
 #line 2 "lexer.l"
 #include <stdio.h> 
 #include "y.tab.h"
-extern yylval;
+extern int yylval;
 #line 464 "lex.yy.c"
 #line 465 "lex.yy.c"
 
@@ -762,7 +762,7 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 18 "lexer.l"
-{yylval = atof(yytext); return NUM;}
+{yylval = strdup(yytext); return NUM;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
