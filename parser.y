@@ -36,7 +36,7 @@ statement:
 	| PRINT NUM { printf("print num\n"); }
 	| PRINT FLOAT { printf("print float\n"); }
 	| PRINT INT { printf("print int\n"); }
-	| ID ASSIGN NUM { printf("id assign num\n"); }
+	| ID ASSIGN NUM { printf("id assign num\n", (strstr($3, ".") != NULL) ? "num":"num"); }
 	| ID ASSIGN ID PLUS NUM{ printf("id assign id + num\n"); }
 	;
 %%

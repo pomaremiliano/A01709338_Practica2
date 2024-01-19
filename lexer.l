@@ -15,6 +15,7 @@ num {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 "i" {return INT;}
 "f" {return FLOAT;}
 "a" {return VAR;}
+"b"	{return VAR;}
 {num} {yylval = strdup(yytext); return NUM;}
 {id} {yylval = strdup(yytext); return ID;}
 "+" {return PLUS;}

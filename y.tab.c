@@ -1277,7 +1277,7 @@ yyreduce:
 
   case 25: /* statement: ID ASSIGN NUM  */
 #line 39 "parser.y"
-                        { printf("id assign num\n"); }
+                        { printf("id assign num\n", (strstr(yyvsp[0], ".") != NULL) ? "num":"num"); }
 #line 1282 "y.tab.c"
     break;
 
