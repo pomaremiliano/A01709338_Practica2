@@ -362,9 +362,9 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[30] =
     {   0,
-        0,    0,   16,   14,   13,   13,   10,    8,    9,   14,
-        6,   12,    7,    4,    5,    3,    2,    7,    0,    0,
-        6,    0,    7,    0,    1,    6,    0,    6,    0
+        0,    0,   16,   14,   13,   13,   11,    9,   10,   14,
+        7,   12,    8,    4,    5,    3,    2,    6,    0,    0,
+        7,    0,    8,    0,    1,    7,    0,    7,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -767,32 +767,32 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 19 "lexer.l"
-{yylval = strdup(yytext); return NUM;}
+{return PRINT;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 20 "lexer.l"
-{yylval = strdup(yytext); return ID;}
+{yylval = strdup(yytext); return NUM;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{return PLUS;}
+{yylval = strdup(yytext); return ID;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 22 "lexer.l"
-{return MINUS;}
+{return PLUS;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 23 "lexer.l"
-{return TIMES;}
+{return MINUS;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 24 "lexer.l"
-{return PRINT;}
+{return TIMES;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP

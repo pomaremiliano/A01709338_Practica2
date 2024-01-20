@@ -16,12 +16,12 @@ num {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 "f" {return FLOAT;}
 "a" {return VAR;}
 "b"	{return VAR;}
+"p"	{return PRINT;}
 {num} {yylval = strdup(yytext); return NUM;}
 {id} {yylval = strdup(yytext); return ID;}
 "+" {return PLUS;}
 "-" {return MINUS;}
 "*" {return TIMES;}
-"p"	{return PRINT;}
 "=" {return ASSIGN;}
 [ \t\n] {;}
 . {return yytext[0];}
