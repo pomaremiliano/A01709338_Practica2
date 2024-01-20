@@ -1,4 +1,4 @@
-# Project Name
+# A01709338 Práctica 02 TC2037
 
 Lex Analyzer A01709338 Jorge Emiliano Pomar 
 
