@@ -1277,13 +1277,13 @@ yyreduce:
 
   case 25: /* statement: ID ASSIGN NUM  */
 #line 39 "parser.y"
-                        { printf("id assign num\n", (strstr(yyvsp[0], ".") != NULL) ? "num":"num"); }
+                        { printf("id assign num\n", (strstr(yyvsp[0], ".") != NULL) ? "id":"num"); }
 #line 1282 "y.tab.c"
     break;
 
   case 26: /* statement: ID ASSIGN ID PLUS NUM  */
 #line 40 "parser.y"
-                               { printf("id assign id + num\n"); }
+                               { printf("id assign id plus num\n", (strstr(yyvsp[-2], ".") != NULL) ? "id":"num"); }
 #line 1288 "y.tab.c"
     break;
 
